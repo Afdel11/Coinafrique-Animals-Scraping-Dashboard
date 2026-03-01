@@ -3,14 +3,13 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import time
 
-def scrape_coinafrique(base_url, category_name, num_pages=3):
+def scrape_coinafrique(base_url, category_name, num_pages=15):
     all_data = []
-    # Headers pour éviter d'être bloqué
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
     }
     
-    print(f"--- Début du scraping : {category_name} ---")
+    print(f"--- Début du scraping: {category_name} ---")
     
     for page in range(1, num_pages + 1):
         try:
@@ -53,9 +52,7 @@ def scrape_coinafrique(base_url, category_name, num_pages=3):
                     })
                 except Exception:
                     continue
-            
-            # Petite pause pour ne pas surcharger le serveur
-            time.sleep(1) 
+        
             
         except Exception as e:
             print(f"Erreur sur la page {page}: {e}")
@@ -63,7 +60,6 @@ def scrape_coinafrique(base_url, category_name, num_pages=3):
                 
     return pd.DataFrame(all_data)
 
-# URLs du Projet 3
 categories = [
     ("https://sn.coinafrique.com/categorie/chiens", "Chiens"),
     ("https://sn.coinafrique.com/categorie/moutons", "Moutons"),
@@ -75,7 +71,7 @@ categories = [
 dfs = []
 
 for url, cat in categories:
-    df = scrape_coinafrique(url, cat, num_pages=2) # Teste avec 2 pages d'abord
+    df = scrape_coinafrique(url, cat, num_pages=15)
     dfs.append(df)
 
 # Fusion et sauvegarde
